@@ -6,6 +6,6 @@ export interface Link {
 export const links: Link[] = [
   { url: "/", text: "Home" },
   { url: "/message", text: "Message Board" },
+  { url: "/author", text: "Authors" },
   { url: "/about", text: "About" },
-  { url: "/authors", text: "Authors" },
 ];
