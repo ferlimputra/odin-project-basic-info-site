@@ -1,7 +1,7 @@
 import express from "express";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-import { AuthorRouter, BaseRouter, MessageRouter } from "./routers";
+import { AuthorRouter, BaseRouter, MessageRouter, UserRouter } from "./routers";
 
 const __filename: string = fileURLToPath(import.meta.url);
 const __dirname: string = dirname(__filename);
@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(AuthorRouter);
 app.use(BaseRouter);
 app.use(MessageRouter);
+app.use(UserRouter);
 
 // Start the server
 app.listen(PORT, (error) => {

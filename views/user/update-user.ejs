@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form method="post" action="/user/<%= user.id %>/update">
+      <div>
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name" value="<%= user.name %>" required />
+      </div>
+      <div>
+        <label for="email">Email: </label>
+        <input type="email" id="email" name="email" value="<%= user.email %>" required />
+      </div>
+      <div>
+        <label for="birthdate">Birthdate: </label>
+        <input type="date" id="birthdate" name="birthdate" value="<%= user.birthdate %>" />
+      </div>
+      <button type="submit">Update User</button>
+    </form>
+    <%- include("../error") %>
+    <%- include("../navbar", { links }) %>
+  </body>
+</html>
