@@ -1,14 +1,20 @@
 import { Handler, Request, Response } from "express";
 import { matchedData, validationResult } from "express-validator";
+import {
+  createUser,
+  deleteUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+} from "../db";
 import { links, User } from "../model";
-import { userStorage } from "../storages";
 import { UserValidator } from "../validators/user.validator";
 
 export class UserController {
-  static getUsers(_req: Request, res: Response): void {
+  static async getUsers(_req: Request, res: Response): Promise<void> {
     res.render("user/user", {
       title: "User List",
-      users: userStorage.getUsers(),
+      users: await getAllUsers(),
       links,
     });
   }
@@ -22,7 +28,7 @@ export class UserController {
 
   static createUserPost: Handler[] = [
     ...UserValidator.validateUser(),
-    (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).render("user/create-user", {
@@ -31,15 +37,15 @@ export class UserController {
           errors: errors.array(),
         });
       }
-      const { name, email, birthdate } = matchedData(req);
-      userStorage.addUser({ name, email, birthdate });
-      res.redirect("/user/user");
+      const { username, email, birthdate } = matchedData(req);
+      await createUser({ username, email, date_of_birth: birthdate });
+      res.redirect("/user");
     },
   ];
 
-  static updateUserGet(req: Request, res: Response): void {
+  static async updateUserGet(req: Request, res: Response): Promise<void> {
     const id = Number.parseInt(req.params.id as string);
-    const user: User | undefined = userStorage.getUserById(id);
+    const user: User | undefined = await getUserById(id);
 
     res.render("user/update-user", {
       title: "Update User",
@@ -50,9 +56,9 @@ export class UserController {
 
   static updateUserPost: Handler[] = [
     ...UserValidator.validateUser(),
-    (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {
       const id = Number.parseInt(req.params.id as string);
-      const user: User | undefined = userStorage.getUserById(id);
+      const user: User | undefined = await getUserById(id);
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
@@ -63,19 +69,19 @@ export class UserController {
           errors: errors.array(),
         });
       }
-      const { name, email, birthdate } = matchedData(req);
-      userStorage.updateUser(id, {
-        name,
+      const { username, email, birthdate } = matchedData(req);
+      await updateUser(id, {
+        username,
         email,
-        birthdate,
+        date_of_birth: birthdate,
       });
-      res.redirect("/user/user");
+      res.redirect("/user");
     },
   ];
 
-  static deleteUserPost(req: Request, res: Response): void {
+  static async deleteUserPost(req: Request, res: Response): Promise<void> {
     const id = Number.parseInt(req.params.id as string);
-    userStorage.deleteUser(id);
-    res.redirect("/user/user");
+    await deleteUser(id);
+    res.redirect("/user");
   }
 }

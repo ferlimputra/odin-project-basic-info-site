@@ -3,7 +3,7 @@ import { body, ValidationChain } from "express-validator";
 export class UserValidator {
   static validateUser(): ValidationChain[] {
     return [
-      body("name")
+      body("username")
         .trim()
         .notEmpty()
         .withMessage("Name is required")

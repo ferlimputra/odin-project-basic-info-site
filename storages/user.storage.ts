@@ -4,15 +4,15 @@ class UserStorage {
   private users: User[] = [
     {
       id: 1,
-      name: "Alice",
+      username: "Alice",
       email: "alice@example.com",
-      birthdate: "1990-01-01",
+      date_of_birth: "1990-01-01",
     },
     {
       id: 2,
-      name: "Bob",
+      username: "Bob",
       email: "bob@example.com",
-      birthdate: "1992-05-15",
+      date_of_birth: "1992-05-15",
     },
   ];
 
